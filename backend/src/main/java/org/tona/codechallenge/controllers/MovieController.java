@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.HandlerMapping;
-
 import org.tona.codechallenge.controllers.dto.MovieDto;
 import org.tona.codechallenge.controllers.dto.MovieUpdateDto;
 import org.tona.codechallenge.controllers.exceptions.DuplicatedMovieException;
