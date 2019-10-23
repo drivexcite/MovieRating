@@ -1,2 +1,8 @@
 /frontend/target/dist
 /backend/target
+/backend/.factorypath
+/backend/.settings
+/backend/derby.log
+/frontend/.settings
+/frontend/node/node.exe
+/.settings
