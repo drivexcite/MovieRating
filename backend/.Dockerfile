@@ -6,13 +6,17 @@ COPY pom.xml .
 COPY src src
 
 RUN apk add --no-cache maven
-RUN mvn clean install -DskipTests
-RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
+RUN mvn dependency:go-offline
 
+COPY src/ /build/src/
+RUN mvn clean package
+
+# Run SpringBoot App
 FROM adoptopenjdk/openjdk11:alpine-slim
 VOLUME /tmp
-ARG DEPENDENCY=/workspace/app/target/dependency
-COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
-COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
-ENTRYPOINT ["java","-cp","app:app/lib/*","org.tona.codechallenge.CodechallengeApplication"]
+
+ARG DEPENDENCY=/workspace/app/target
+WORKDIR /app
+
+COPY --from=build ${DEPENDENCY}/*.jar .
+ENTRYPOINT java -jar movierating.backend-1.0.0.jar -Djava.security.egd=file:/dev/./urandom
