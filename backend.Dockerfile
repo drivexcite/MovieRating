@@ -2,13 +2,13 @@ FROM adoptopenjdk/openjdk11:alpine-slim as build
 
 WORKDIR /workspace/app
 
-COPY pom.xml .
-COPY src src
+COPY backend/pom.xml .
+COPY backend/src src
 
 RUN apk add --no-cache maven
 RUN mvn dependency:go-offline
 
-COPY src/ /build/src/
+COPY backend/src/ /build/src/
 RUN mvn clean package
 
 # Run SpringBoot App
