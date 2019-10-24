@@ -1,0 +1,2 @@
+az acr build -t movierating-frontend https://github.com/drivexcite/MovieRating.git --file frontend.Dockerfile
+az acr build -t movierating-backend https://github.com/drivexcite/MovieRating.git --file backend.Dockerfile
