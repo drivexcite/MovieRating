@@ -1,0 +1,32 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: movierating-frontend
+spec:
+  selector:
+    app: movierating-frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    nodePort: 30001
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-frontend
+spec:
+  selector:
+      matchLabels:
+        app: movierating-frontend
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: movierating-frontend
+    spec:
+      containers:
+        - name: movierating-frontend
+          image: movieratingappcontainerregistry.azurecr.io/movierating-frontend:latest
+          ports:
+            - containerPort: 80

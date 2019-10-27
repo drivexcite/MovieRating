@@ -1,0 +1,31 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: movierating-backend
+spec:
+  selector:
+    app: movierating-backend
+  ports:
+  - protocol: TCP
+    port: 8080
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: movierating-backend
+spec:
+  selector:
+      matchLabels:
+        app: movierating-backend
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: movierating-backend
+    spec:
+      containers:
+        - name: movierating-backend
+          image: movieratingappcontainerregistry.azurecr.io/movierating-backend:latest
+          ports:
+            - containerPort: 80
