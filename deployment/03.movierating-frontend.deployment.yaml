@@ -2,6 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: movierating-frontend
+  namespace: tona-ns
 spec:
   selector:
     app: movierating-frontend
@@ -16,6 +17,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: movierating-frontend
+  namespace: tona-ns
 spec:
   selector:
       matchLabels:
@@ -25,6 +27,9 @@ spec:
     metadata:
       labels:
         app: movierating-frontend
+      annotations:
+          prometheus.io/scrape: 'true'
+          prometheus.io/port: '9090'
     spec:
       containers:
         - name: movierating-frontend
@@ -37,6 +42,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: movierating-ingress
+  namespace: tona-ns
 spec:
   rules:
   - http:

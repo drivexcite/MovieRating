@@ -18,3 +18,6 @@ kubectl create clusterrolebinding kubernetes-dashboard --clusterrole=cluster-adm
 
 # Attach the ACR Instance to the Cluster
 az aks update -n KubeCluster -g $resourceGroup --attach-acr movieratingappcontainerregistry.azurecr.io
+
+# The metrics service is automatically installed in Kubnernetes 1.10 and above
+az aks show --resource-group $resourceGroup --name KubeCluster --query kubernetesVersion

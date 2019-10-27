@@ -1,0 +1,26 @@
+apiVersion: v1
+items:
+- apiVersion: autoscaling/v2beta2
+  kind: HorizontalPodAutoscaler
+  metadata:
+    creationTimestamp: "2019-10-27T04:27:27Z"
+    name: movierating-frontend
+    namespace: tona-ns
+    resourceVersion: "24026"
+    selfLink: /apis/autoscaling/v2beta2/namespaces/default/horizontalpodautoscalers/movierating-frontend
+    uid: 154a255b-f872-11e9-9479-66edf8d0e804
+  spec:
+    maxReplicas: 8
+    metrics:
+    - resource:
+        name: cpu
+        target:
+          averageUtilization: 80
+          type: Utilization
+      type: Resource
+    minReplicas: 4
+    scaleTargetRef:
+      apiVersion: extensions/v1beta1
+      kind: Deployment
+      name: movierating-frontend
+kind: List

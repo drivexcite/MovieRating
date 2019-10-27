@@ -2,6 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: movierating-backend
+  namespace: tona-ns
 spec:
   selector:
     app: movierating-backend
@@ -10,10 +11,12 @@ spec:
     port: 8080
   type: ClusterIP
 ---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: movierating-backend
+  namespace: tona-ns
 spec:
   selector:
       matchLabels:
@@ -23,6 +26,9 @@ spec:
     metadata:
       labels:
         app: movierating-backend
+      annotations:
+          prometheus.io/scrape: 'true'
+          prometheus.io/port: '9090'
     spec:
       containers:
         - name: movierating-backend

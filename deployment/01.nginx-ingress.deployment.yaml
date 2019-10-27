@@ -5,6 +5,7 @@ metadata:
     app: nginx-ingress
     component: "controller"
   name: release-name-nginx-ingress-controller
+  namespace: tona-ns
 spec:
   selector:
     matchLabels:
@@ -19,6 +20,7 @@ metadata:
   labels:
     app: nginx-ingress
   name: release-name-nginx-ingress
+  namespace: tona-ns
 ---
 
 apiVersion: v1
@@ -27,6 +29,7 @@ metadata:
   labels:
     app: nginx-ingress
   name: release-name-nginx-ingress-backend
+  namespace: tona-ns
 ---
 
 apiVersion: rbac.authorization.k8s.io/v1beta1
@@ -35,6 +38,7 @@ metadata:
   labels:
     app: nginx-ingress
   name: release-name-nginx-ingress
+  namespace: tona-ns
 rules:
   - apiGroups:
       - ""
@@ -93,6 +97,7 @@ metadata:
   labels:
     app: nginx-ingress
   name: release-name-nginx-ingress
+  namespace: tona-ns
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -109,6 +114,7 @@ metadata:
   labels:
     app: nginx-ingress
   name: release-name-nginx-ingress
+  namespace: tona-ns
 rules:
   - apiGroups:
       - ""
@@ -190,6 +196,7 @@ metadata:
   labels:
     app: nginx-ingress
   name: release-name-nginx-ingress
+  namespace: tona-ns
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -207,6 +214,7 @@ metadata:
     app: nginx-ingress
     component: "controller"  
   name: release-name-nginx-ingress-controller
+  namespace: tona-ns
 spec:
   clusterIP: ""
   ports:
@@ -232,6 +240,7 @@ metadata:
     app: nginx-ingress
     component: "default-backend"
   name: release-name-nginx-ingress-default-backend
+  namespace: tona-ns
 spec:
   clusterIP: ""
   ports:
@@ -252,6 +261,7 @@ metadata:
     app: nginx-ingress
     component: "controller"
   name: release-name-nginx-ingress-controller
+  namespace: tona-ns
 spec:
   replicas: 2
   revisionHistoryLimit: 10
@@ -338,6 +348,7 @@ metadata:
     app: nginx-ingress
     component: "default-backend"
   name: release-name-nginx-ingress-default-backend
+  namespace: tona-ns
 spec:
   replicas: 1
   revisionHistoryLimit: 10
