@@ -7,14 +7,15 @@ spec:
     app: movierating-frontend
   ports:
   - protocol: TCP
-    port: 80
-    nodePort: 30001
-  type: NodePort
+    port: 9090
+    targetPort: 80
+  type: ClusterIP
 ---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: demo-frontend
+  name: movierating-frontend
 spec:
   selector:
       matchLabels:
@@ -30,3 +31,17 @@ spec:
           image: movieratingappcontainerregistry.azurecr.io/movierating-frontend:latest
           ports:
             - containerPort: 80
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: movierating-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: movierating-frontend
+          servicePort: 9090

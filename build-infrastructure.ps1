@@ -17,4 +17,4 @@ az aks browse --resource-group $resourceGroup --name KubeCluster
 kubectl create clusterrolebinding kubernetes-dashboard --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
 
 # Attach the ACR Instance to the Cluster
-az aks update -n KubeCluster -g $resourceGroup --attach-acr movieratingappcontainerregistry
+az aks update -n KubeCluster -g $resourceGroup --attach-acr movieratingappcontainerregistry.azurecr.io
