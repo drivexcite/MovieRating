@@ -4,10 +4,3 @@ metadata:
   name: tona-ns
   labels:
     name: tona-ns
----
-kind: Namespace
-apiVersion: v1
-metadata:
-  name: tona-monitoring-ns
-  labels:
-    name: tona-monitoring-ns

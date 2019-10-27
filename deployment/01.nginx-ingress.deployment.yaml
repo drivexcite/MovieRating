@@ -105,7 +105,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: release-name-nginx-ingress
-    namespace: default
+    namespace: tona-ns
 ---
 
 apiVersion: rbac.authorization.k8s.io/v1beta1
@@ -204,7 +204,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: release-name-nginx-ingress
-    namespace: default
+    namespace: tona-ns
 ---
 
 apiVersion: v1
@@ -278,14 +278,14 @@ spec:
       dnsPolicy: ClusterFirst
       containers:
         - name: nginx-ingress-controller
-          image: "quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.25.1"
-          imagePullPolicy: "IfNotPresent"
+          image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.26.1
           args:
             - /nginx-ingress-controller
-            - --default-backend-service=default/release-name-nginx-ingress-default-backend
-            - --election-id=ingress-controller-leader
-            - --ingress-class=nginx
-            - --configmap=default/release-name-nginx-ingress-controller
+            - --configmap=$(POD_NAMESPACE)/$(NGINX_CONFIGMAP_NAME)
+            - --tcp-services-configmap=$(POD_NAMESPACE)/$(TCP_CONFIGMAP_NAME)
+            - --udp-services-configmap=$(POD_NAMESPACE)/$(UDP_CONFIGMAP_NAME)
+            - --publish-service=$(POD_NAMESPACE)/$(SERVICE_NAME)
+            - --annotations-prefix=nginx.ingress.kubernetes.io
           securityContext:
             capabilities:
                 drop:
@@ -303,16 +303,6 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: 10254
-              scheme: HTTP
-            initialDelaySeconds: 10
-            periodSeconds: 10
-            timeoutSeconds: 1
-            successThreshold: 1
-            failureThreshold: 3
           ports:
             - name: http
               containerPort: 80
@@ -320,19 +310,35 @@ spec:
             - name: https
               containerPort: 443
               protocol: TCP
+          livenessProbe:            
+            httpGet:
+              path: /healthz
+              port: 10254
+              scheme: HTTP
+
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+            timeoutSeconds: 10          
           readinessProbe:
             httpGet:
               path: /healthz
               port: 10254
               scheme: HTTP
+
             initialDelaySeconds: 10
-            periodSeconds: 10
-            timeoutSeconds: 1
+            periodSeconds: 10            
             successThreshold: 1
             failureThreshold: 3
-          resources:
-            {}
-            
+            timeoutSeconds: 5
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - /wait-shutdown
+      restartPolicy: Always
+
       hostNetwork: false
       nodeSelector:
         beta.kubernetes.io/os: linux
@@ -365,6 +371,10 @@ spec:
           args:
           securityContext:
             runAsUser: 65534
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
           livenessProbe:
             httpGet:
               path: /healthz
@@ -384,13 +394,7 @@ spec:
             periodSeconds: 5
             timeoutSeconds: 5
             successThreshold: 1
-            failureThreshold: 6
-          ports:
-            - name: http
-              containerPort: 8080
-              protocol: TCP
-          resources:
-            {}
+            failureThreshold: 6          
             
       nodeSelector:
         beta.kubernetes.io/os: linux
