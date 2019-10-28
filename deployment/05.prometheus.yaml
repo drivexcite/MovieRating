@@ -4,15 +4,16 @@ metadata:
   name: tona-monitoring-ns
   labels:
     name: tona-monitoring-ns
+---
 
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: monitoring
   namespace: tona-monitoring-ns
+---
 
 # https://devopscube.com/setup-prometheus-monitoring-on-kubernetes/
-
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
@@ -243,48 +244,18 @@ data:
           description: "Disk is almost full (< 10% left)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
 ---
 
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: fast
-  namespace: tona-monitoring-ns
-provisioner: kubernetes.io/azure-disk
-parameters:
-  storageaccounttype: Standard_LRS
-  kind: Shared
----
-
-apiVersion: "v1"
-kind: "PersistentVolume"
-metadata:
-  name: data-volume-1
-  namespace: tona-monitoring-ns
-spec:
-  capacity:
-    storage: 50Gi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: fast
-  gcePersistentDisk:
-    fsType: ext4
-    pdName: prometheus-volume
----
-
-kind: PersistentVolumeClaim
 apiVersion: v1
+kind: PersistentVolumeClaim
 metadata:
   name: prometheus-claim
-  namespace: monitoring
-  annotations:
-    volume.beta.kubernetes.io/storage-class: "fast"
+  namespace: tona-monitoring-ns
 spec:
   accessModes:
-    - ReadWriteOnce
-  volumeMode: Filesystem
+  - ReadWriteOnce
+  storageClassName: default
   resources:
     requests:
-      storage: 250Gi
+      storage: 20Gi
 ---
 
 apiVersion: extensions/v1beta1
