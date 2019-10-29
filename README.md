@@ -70,6 +70,13 @@ spec:
 [See the 06.grafana.yaml in the deployment folder.](https://github.com/drivexcite/MovieRating/blob/master/deployment/06.grafana.yaml)
 ![Grafana](https://github.com/drivexcite/MovieRating/tree/master/images/Grafana.jpg)
 
+### Install Istio into the cluster.###
+[See the 07.istio.yaml in the deployment folder.](https://github.com/drivexcite/MovieRating/blob/master/deployment/07.istio.yaml)
+![Istio Installed](https://github.com/drivexcite/MovieRating/tree/master/images/IstioInstalled01.jpg)
+![Istio Services](https://github.com/drivexcite/MovieRating/tree/master/images/IstioInstalled02.jpg)
+
+It's actually a relief that the requirement was only to install it and not configure it, because it's a damn nightmare.
+
 ### Tear down your deployment and re-deploy.###
 ![kubectl delete](https://github.com/drivexcite/MovieRating/tree/master/images/kubectl-delete.jpg)
 ![kubectl apply](https://github.com/drivexcite/MovieRating/tree/master/images/kubectl-apply.jpg)

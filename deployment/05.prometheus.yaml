@@ -1,12 +1,4 @@
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: tona-monitoring-ns
-  labels:
-    name: tona-monitoring-ns
----
-
-apiVersion: v1
 kind: ConfigMap
 metadata:
   labels:
