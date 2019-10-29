@@ -55,10 +55,10 @@ spec:
 ### Screenshot of pod information for your namespace only.###
 ![kubectl get pods -n tona-ns](https://github.com/drivexcite/MovieRating/tree/master/images/kubectl-get-pods.jpg)
 
-### Screenshot of console logs from your  back end service.###
+### Screenshot of console logs from your backend service.###
 ![kubectl logs --follow backend -n tona-ns](https://github.com/drivexcite/MovieRating/tree/master/images/kubectl-logs-follow-backend.jpg)
 
-### Screenshot of console logs from your  front end application.###
+### Screenshot of console logs from your frontend application.###
 ![kubectl logs --follow frontend -n tona-ns](https://github.com/drivexcite/MovieRating/tree/master/images/kubectl-logs-follow-frontend.jpg)
 
 ### Install Prometheus into the cluster.###
@@ -70,5 +70,8 @@ spec:
 [See the 06.grafana.yaml in the deployment folder.](https://github.com/drivexcite/MovieRating/blob/master/deployment/06.grafana.yaml)
 ![Grafana](https://github.com/drivexcite/MovieRating/tree/master/images/Grafana.jpg)
 
-
+### Tear down your deployment and re-deploy.###
+![kubectl delete](https://github.com/drivexcite/MovieRating/tree/master/images/kubectl-delete.jpg)
+![kubectl apply](https://github.com/drivexcite/MovieRating/tree/master/images/kubectl-apply.jpg)
+![kubectl get pods](https://github.com/drivexcite/MovieRating/tree/master/images/kubectl-get-pods-after-recreate.jpg)
 
