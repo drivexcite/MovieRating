@@ -50,10 +50,14 @@ spec:
 [See the 04.horizontal-pod-autoscaler-v2.yaml in the deployment folder.](https://github.com/drivexcite/MovieRating/blob/master/deployment/04.horizontal-pod-autoscaler-v2.yaml)
 
 ### Screenshot of node information from the console.###
-![kubectl get nodes](https://github.com/drivexcite/MovieRating/tree/master/images/kubectl-get-nodes.jpg)
+<img src="https://github.com/drivexcite/MovieRating/tree/master/images/kubectl-get-nodes.jpg"
+     alt="kubectl get nodes"
+     style="float: left; margin-right: 10px;" />
 
 ### Screenshot of pod information for your namespace only.###
-![kubectl get pods -n tona-ns](https://github.com/drivexcite/MovieRating/tree/master/images/kubectl-get-pods.jpg)
+<img src="https://github.com/drivexcite/MovieRating/tree/master/images/kubectl-get-pods.jpg"
+     alt="kubectl get pods -n tona-ns"
+     style="float: left; margin-right: 10px;" />
 
 ### Screenshot of console logs from your backend service.###
 ![kubectl logs --follow backend -n tona-ns](https://github.com/drivexcite/MovieRating/tree/master/images/kubectl-logs-follow-backend.jpg)
