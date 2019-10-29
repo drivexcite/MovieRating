@@ -21,7 +21,7 @@ I did it declaratively. [See the 00.namespaces.yaml in the deployment folder.](h
 [See the 03.movierating-frontend.deployment.yaml in the deployment folder.](https://github.com/drivexcite/MovieRating/blob/master/deployment/03.movierating-frontend.deployment.yaml)
 
 ### Frontend app successfully calls the backend service within the cluster.###
-It should be doing it right now. [If the cluster is alive, go here to test the app.](http://13.88.176.196/)
+It should be doing it right now. [If the cluster is alive, go here to test the app.](http://40.78.12.221/)
 ![MovieRatingApp](https://github.com/drivexcite/MovieRating/tree/master/images/MovieRatingApp.jpg)
 
 ### Create an ingress into the cluster for the front end only.###
