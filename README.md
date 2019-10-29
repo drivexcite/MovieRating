@@ -75,10 +75,12 @@ spec:
 ![Istio Installed](https://github.com/drivexcite/MovieRating/tree/master/images/IstioInstalled01.jpg)
 ![Istio Services](https://github.com/drivexcite/MovieRating/tree/master/images/IstioInstalled02.jpg)
 
-It's actually a relief that the requirement was only to install it and not configure it, because it's a damn nightmare.
+It's actually a relief that the requirement was only to install it and not configure it, because it's a damn nightmare. Needless to say, the installation YAML was created using Helm.
 
 ### Tear down your deployment and re-deploy.###
 ![kubectl delete](https://github.com/drivexcite/MovieRating/tree/master/images/kubectl-delete.jpg)
 ![kubectl apply](https://github.com/drivexcite/MovieRating/tree/master/images/kubectl-apply.jpg)
 ![kubectl get pods](https://github.com/drivexcite/MovieRating/tree/master/images/kubectl-get-pods-after-recreate.jpg)
 
+### Get a pod stuck in a pending state, and show how to resolve it.#
+This is not even funny. During the long long phase of configuring Prometheus, I was having a problem. For some reason, the prometheus-server node was taking too long to initialize, and after a couple of minutes I found it was on a ![CrashLoopBackoff](https://github.com/drivexcite/MovieRating/tree/master/images/ProblemSolving1.jpg). But then, I didn't really know how to diagnose Pod problems that were related to a bad resource definition, which is a pretty simple mistake to make when working with YAML. So after some time I discovered that kubectl has a ![describe](https://github.com/drivexcite/MovieRating/tree/master/images/ProblemSolving2.jpg) command that lets you instrospect into the inner workings of the Pod scheduling process. Sure enough, at the very end of the ![describe output](https://github.com/drivexcite/MovieRating/tree/master/images/ProblemSolving3.jpg), there was an error related to configuration, in this case, I mounted a volume in the wrong path (![see the highlited lines](https://github.com/drivexcite/MovieRating/tree/master/images/ProblemSolving4.jpg) in the prometheus definition file) and thus without the prometheus.yaml configuration file available for the container, it would never start. So went back to the YAML and change the mount point from etc/prometheus to etc/config and reapplied the resource. After a while, ![I described](https://github.com/drivexcite/MovieRating/tree/master/images/ProblemSolving5.jpg) the Pod once again and I could no longer see ![any errors in the output](https://github.com/drivexcite/MovieRating/tree/master/images/ProblemSolving6.jpg) and the Prometheus Server ![finally fricking worked](https://github.com/drivexcite/MovieRating/tree/master/images/ProblemSolving6.jpg)!
