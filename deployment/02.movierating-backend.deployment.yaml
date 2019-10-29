@@ -3,6 +3,9 @@ apiVersion: v1
 metadata:
   name: movierating-backend
   namespace: tona-ns
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9100"
 spec:
   selector:
     app: movierating-backend
@@ -27,8 +30,8 @@ spec:
       labels:
         app: movierating-backend
       annotations:
-          prometheus.io/scrape: 'true'
-          prometheus.io/port: '9090'
+          prometheus.io/scrape: "true"
+          prometheus.io/port: "9100"
     spec:
       containers:
         - name: movierating-backend
