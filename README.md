@@ -1,28 +1,74 @@
-### Movie rating example ###
+### Successfully containerize the backend service.###
 
-* This repository contains a little example of a minumum web application using a Java backend and a modern front end. The backend is built using Spring Boot and an in-memory db. The front end is built using Vue.js and Vuetify.
+[See the backend.Dockerfile in the root folder.](https://github.com/drivexcite/MovieRating/blob/master/backend.Dockerfile)
 
-### How do I get set up? ###
+Most of the complexity was to get the pom.xml configuration for Spring Boot maven plugin.
 
-Prerequisites:
- * Java 11 JDK. And the corresponding JAVA_HOME environment variable.
- * node/npm latest version. Use chocolatey for short.
- * A modern browser. Chrome for short.
 
-#### To run the project: ####
- * Open a command line prompt with admin privileges.
- * Switch to the frontend directory and then install Vue and build:
- 
-	`movieratings\frontend>npm install -g @vue/cli`
-	
-	`movieratings\frontend>npm install`
-	
-	`movieratings\frontend>npm run build`
-	
- * Switch to the parent directory and then run self-hosted in Tomcat:
- 
-	`movieratings>.\mvnw -projects backend spring-boot:run`
-	
- * Open a browser and go to:
- 
-	`http://localhost:8088/`
+[See the fronend.Dockerfile in the root folder.](https://github.com/drivexcite/MovieRating/blob/master/frontend.Dockerfile)
+
+The biggest challenge was to forward calls form the server-side of the front end project to the Java backend.
+
+### Create a namespace in the kubernetes cluster.###
+I did it declaratively. [See the 00.namespaces.yaml in the deployment folder.](https://github.com/drivexcite/MovieRating/blob/master/deployment/00.namespaces.yaml)
+
+
+### Install the backend service into the kubernetes cluster.###
+[See the 02.movierating-backend.deployment.yaml in the deployment folder.](https://github.com/drivexcite/MovieRating/blob/master/deployment/02.movierating-backend.deployment.yaml)
+
+
+### Install the frontend app into the kubernetes cluster.###
+[See the 03.movierating-frontend.deployment.yaml in the deployment folder.](https://github.com/drivexcite/MovieRating/blob/master/deployment/03.movierating-frontend.deployment.yaml)
+
+### Frontend app successfully calls the backend service within the cluster.###
+It should be doing it right now. [If the cluster is alive, go here to test the app.](http://13.88.176.196/)
+![MovieRatingApp](https://github.com/drivexcite/MovieRating/tree/master/images/MovieRatingApp.jpg)
+
+### Create an ingress into the cluster for the front end only.###
+[See the 03.movierating-frontend.deployment.yaml in the deployment folder.](https://github.com/drivexcite/MovieRating/blob/master/deployment/03.movierating-frontend.deployment.yaml)
+
+The relevant section is from line 44 onwards. It's the last resource:
+```yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: movierating-ingress
+  namespace: tona-ns
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9100"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: movierating-frontend
+		  servicePort: 9090
+```
+### Create an Horizontal Pod Auto-scaler in the cluster, using cpu utilization as the driving metric.###
+[See the 04.horizontal-pod-autoscaler-v2.yaml in the deployment folder.](https://github.com/drivexcite/MovieRating/blob/master/deployment/04.horizontal-pod-autoscaler-v2.yaml)
+
+### Screenshot of node information from the console.###
+![kubectl get nodes](https://github.com/drivexcite/MovieRating/tree/master/images/kubectl-get-nodes.jpg)
+
+### Screenshot of pod information for your namespace only.###
+![kubectl get pods -n tona-ns](https://github.com/drivexcite/MovieRating/tree/master/images/kubectl-get-pods.jpg)
+
+### Screenshot of console logs from your  back end service.###
+![kubectl logs --follow backend -n tona-ns](https://github.com/drivexcite/MovieRating/tree/master/images/kubectl-logs-follow-backend.jpg)
+
+### Screenshot of console logs from your  front end application.###
+![kubectl logs --follow frontend -n tona-ns](https://github.com/drivexcite/MovieRating/tree/master/images/kubectl-logs-follow-frontend.jpg)
+
+### Install Prometheus into the cluster.###
+[See the 05.prometheus.yaml in the deployment folder.](https://github.com/drivexcite/MovieRating/blob/master/deployment/05.prometheus.yaml)
+![Prometheus (targets)](https://github.com/drivexcite/MovieRating/tree/master/images/PrometheusTargets.jpg)
+![Prometheus (rules)](https://github.com/drivexcite/MovieRating/tree/master/images/PrometheusRules.jpg)
+
+### Install Grafana into the cluster.###
+[See the 06.grafana.yaml in the deployment folder.](https://github.com/drivexcite/MovieRating/blob/master/deployment/06.grafana.yaml)
+![Grafana](https://github.com/drivexcite/MovieRating/tree/master/images/Grafana.jpg)
+
+
+
